@@ -1,6 +1,5 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
-import { Maybe } from "@metamask/providers/dist/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
@@ -11,6 +10,25 @@ declare global {
 const Ether: React.FC = () => {
   const [accounts, setAccounts] = useState<any>([]);
   const [balance, setBalance] = useState<any>(0);
+
+  const accountsChangeHandler = (acc: any) => {
+    setAccounts(acc);
+  };
+
+  useEffect(() => {
+    window.onload = () => {
+      if (window.ethereum) {
+        window.ethereum.on("accountsChanged", accountsChangeHandler);
+        window.ethereum
+          .request({ method: "eth_accounts" })
+          .then(accountsChangeHandler)
+          .catch((err) => console.log(err));
+      } else {
+        console.log("ethereum is not defined");
+      }
+    };
+  }, []);
+
   const connectClickHandler = async () => {
     const accountsCalled = await window.ethereum
       .request({ method: "eth_requestAccounts" })
@@ -25,7 +43,8 @@ const Ether: React.FC = () => {
     const convertedBalance = parseFloat(balance) / Math.pow(10, 18);
     setBalance(convertedBalance);
   };
-  console.log(accounts, balance);
+  console.log(balance);
+  console.log(accounts);
   return (
     <div className=" flex justify-center items-center h-96 w-96 bg-green-200 text-black">
       <button
