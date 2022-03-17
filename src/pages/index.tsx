@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Fragment } from "react";
-import HowItWorks from "../components/howItWorksPage/HowItWorks";
+import Ether from "../components/Ether";
 
 export default function home(): JSX.Element {
   return (
@@ -15,7 +15,7 @@ export default function home(): JSX.Element {
         {/* <meta name="keywords" content={careerMeta.keywords} />
         <meta name="author" content={careerMeta.author} /> */}
       </Head>
-      <HowItWorks />
+      <Ether />
     </Fragment>
   );
 }
